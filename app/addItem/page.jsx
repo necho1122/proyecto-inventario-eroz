@@ -117,6 +117,7 @@ function AddVentaComponent() {
 						value={venta.categoria}
 						onChange={handleChange}
 					>
+						<option value=''>Selecciona una categoría</option>
 						<option value='Accesorios'>Accesorios</option>
 						<option value='Telefonos'>Teléfonos</option>
 					</select>
