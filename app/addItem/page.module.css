@@ -54,6 +54,21 @@
     border-color: #007bff;
 }
 
+.formGroup select
+{
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.formGroup select:focus
+{
+    border-color: #007bff;
+}
+
 /* Botón de agregar venta */
 .container button
 {

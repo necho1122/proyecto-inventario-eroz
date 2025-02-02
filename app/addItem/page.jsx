@@ -32,6 +32,8 @@ function AddVentaComponent() {
 		producto: '',
 		cantidad: '',
 		precioUnitario: '',
+		marca: '',
+		categoria: '',
 	});
 
 	const handleChange = (e) => {
@@ -43,12 +45,24 @@ function AddVentaComponent() {
 	};
 
 	const handleAddVenta = async () => {
-		if (!venta.producto || !venta.cantidad || !venta.precioUnitario) {
+		if (
+			!venta.producto ||
+			!venta.cantidad ||
+			!venta.precioUnitario ||
+			!venta.marca ||
+			!venta.categoria
+		) {
 			alert('Por favor, completa todos los campos.');
 			return;
 		}
 		await agregarVenta(venta); // Llama a la función para agregar la venta
-		setVenta({ producto: '', cantidad: '', precioUnitario: '' }); // Limpia los campos
+		setVenta({
+			producto: '',
+			cantidad: '',
+			precioUnitario: '',
+			marca: '',
+			categoria: '',
+		}); // Limpia los campos
 	};
 
 	return (
@@ -87,6 +101,27 @@ function AddVentaComponent() {
 						onChange={handleChange}
 					/>
 				</div>
+				<div className={styles.formGroup}>
+					<label htmlFor='marca'>Marca:</label>
+					<input
+						type='text'
+						id='marca'
+						value={venta.marca}
+						onChange={handleChange}
+					/>
+				</div>
+				<div className={styles.formGroup}>
+					<label htmlFor='categoria'>Categoría:</label>
+					<select
+						id='categoria'
+						value={venta.categoria}
+						onChange={handleChange}
+					>
+						<option value='Accesorios'>Accesorios</option>
+						<option value='Telefonos'>Teléfonos</option>
+					</select>
+				</div>
+
 				<button onClick={handleAddVenta}>Agregar Producto</button>
 				<Link
 					href='/stocks'

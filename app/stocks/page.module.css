@@ -111,6 +111,37 @@
     fill: #0056b3;
 }
 
+.filterContainer
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.filterContainer label
+{
+    font-weight: bold;
+    color: #333;
+}
+
+.filterContainer select
+{
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.filterContainer select:focus
+{
+    border-color: #007bff;
+    outline: none;
+}
+
+
 /* Responsive design for mobile screens */
 @media (max-width: 768px)
 {
