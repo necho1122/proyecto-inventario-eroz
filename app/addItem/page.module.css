@@ -1,0 +1,121 @@
+/* Contenedor principal para la página */
+.container
+{
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+/* Estilo del título principal */
+.container h1
+{
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Estilo para los grupos de formulario */
+.formGroup
+{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Estilo de las etiquetas de los campos del formulario */
+.formGroup label
+{
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* Estilo de los campos de entrada */
+.formGroup input
+{
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Estilo para el foco en los inputs */
+.formGroup input:focus
+{
+    border-color: #007bff;
+}
+
+/* Botón de agregar venta */
+.container button
+{
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.container button:hover
+{
+    background-color: #1976d2;
+}
+
+/* Estilo para el botón de volver */
+.container button[style*="backgroundColor"]
+{
+    background-color: #f44336;
+}
+
+.container button[style*="backgroundColor"]:hover
+{
+    background-color: #d32f2f;
+}
+
+.link
+{
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+/* Diseño responsivo para pantallas pequeñas */
+@media (max-width: 768px)
+{
+    .container
+    {
+        padding: 20px;
+    }
+
+    .container h1
+    {
+        font-size: 2rem;
+    }
+
+    .formGroup input
+    {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .container button
+    {
+        font-size: 1rem;
+        padding: 10px;
+    }
+}

@@ -1,0 +1,75 @@
+/* salesList.module.css */
+.container
+{
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+.container h1
+{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.salesList
+{
+    list-style: none;
+    padding: 0;
+}
+
+.saleItem
+{
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.saleSummary
+{
+    padding: 10px 15px;
+    background-color: #f4f4f9;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.saleSummary:hover
+{
+    background-color: #e9ecef;
+}
+
+.saleDetails
+{
+    padding: 15px;
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+}
+
+.productItem
+{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.productItem:last-child
+{
+    border-bottom: none;
+}
+
+.customerDetails
+{
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}

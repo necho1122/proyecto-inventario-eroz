@@ -1,0 +1,96 @@
+.container
+{
+    font-family: 'Roboto', Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f9;
+    color: #333;
+    min-height: 100vh;
+}
+
+.container h1
+{
+    text-align: center;
+    color: #0078d7;
+    margin-bottom: 20px;
+}
+
+.form
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.select
+{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 200px;
+}
+
+.input
+{
+    padding: 10px;
+    width: 80px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.button
+{
+    padding: 10px 20px;
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover
+{
+    background-color: #005bb5;
+}
+
+.cart
+{
+    margin-top: 20px;
+}
+
+.container table
+{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.container th,
+.container td
+{
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.container th
+{
+    background-color: #f4f4f9;
+}
+
+.buttonPrint
+{
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.buttonPrint:hover
+{
+    background-color: #218838;
+}
