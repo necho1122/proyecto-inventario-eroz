@@ -9,7 +9,7 @@ function SalesPage() {
 	const [cart, setCart] = useState([]);
 	const [selectedProduct, setSelectedProduct] = useState('');
 	const [quantity, setQuantity] = useState(1);
-	const [tasa, setTasa] = useState();
+	const [tasa, setTasa] = useState('');
 	const [products, setProducts] = useState([]);
 	const [customerDetails, setCustomerDetails] = useState({
 		nombre: '',
@@ -47,12 +47,13 @@ function SalesPage() {
 			if (existingItem) {
 				return prevCart.map((item) =>
 					item.id === product.id
-						? { ...item, quantity: item.quantity + quantity }
+						? { ...item, quantity: item.quantity + Number(quantity) }
 						: item
 				);
 			}
-			return [...prevCart, { ...product, quantity }];
+			return [...prevCart, { ...product, quantity: Number(quantity) }];
 		});
+
 		setSelectedProduct('');
 		setQuantity(1);
 	};
@@ -69,7 +70,7 @@ function SalesPage() {
 						producto: item.producto,
 						cantidad: item.quantity,
 						precioUnitario: item.precioUnitario,
-						subtotal: parseFloat(item.precioUnitario) * item.quantity,
+						subtotal: (parseFloat(item.precioUnitario) || 0) * item.quantity,
 					})),
 					cliente: customerDetails,
 				}),
@@ -111,6 +112,7 @@ function SalesPage() {
 						<h3>JCellPC</h3>
 						<p><strong>RIF:</strong> 18.455.219-8</p>
 						<p><strong>Dirección:</strong> Malaver 2 local #105-B en San José de Guanipa 6054, Estado Anzoátegui.</p>
+						<p><strong>Fecha:</strong> ${new Date().toLocaleString()}</p>
 						<h3>Detalles del Cliente</h3>
 						<p><strong>Nombre:</strong> ${customerDetails.nombre}</p>
 						<p><strong>Cédula:</strong> ${customerDetails.cedula}</p>
@@ -175,8 +177,9 @@ function SalesPage() {
 					<label htmlFor='tasa'>Tasa $/Bs</label>
 					<input
 						type='number'
+						step='0.01'
 						value={tasa}
-						onChange={(e) => setTasa(parseInt(e.target.value) || 1)}
+						onChange={(e) => setTasa(parseFloat(e.target.value) || 1)}
 						className={styles.input}
 					/>
 				</div>
@@ -240,7 +243,7 @@ function SalesPage() {
 					</table>
 					<h3>
 						Total: ${calculateTotal().toFixed(2)} (Bs{' '}
-						{calculateTotal().toFixed(2) * tasa})
+						{(calculateTotal() * tasa).toFixed(2)})
 					</h3>
 				</div>
 				<button
