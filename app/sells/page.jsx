@@ -9,6 +9,7 @@ function SalesPage() {
 	const [cart, setCart] = useState([]);
 	const [selectedProduct, setSelectedProduct] = useState('');
 	const [quantity, setQuantity] = useState(1);
+	const [tasa, setTasa] = useState();
 	const [products, setProducts] = useState([]);
 	const [customerDetails, setCustomerDetails] = useState({
 		nombre: '',
@@ -107,7 +108,10 @@ function SalesPage() {
 				</head>
 				<body>
 					<div class="customer-details">
-						<h2>Detalles del Cliente</h2>
+						<h3>JCellPC</h3>
+						<p><strong>RIF:</strong> 18.455.219-8</p>
+						<p><strong>Dirección:</strong> Malaver 2 local #105-B en San José de Guanipa 6054, Estado Anzoátegui.</p>
+						<h3>Detalles del Cliente</h3>
 						<p><strong>Nombre:</strong> ${customerDetails.nombre}</p>
 						<p><strong>Cédula:</strong> ${customerDetails.cedula}</p>
 						<p><strong>Dirección:</strong> ${customerDetails.direccion}</p>
@@ -167,6 +171,15 @@ function SalesPage() {
 			</div>
 
 			<div className={styles.form}>
+				<div>
+					<label htmlFor='tasa'>Tasa $/Bs</label>
+					<input
+						type='number'
+						value={tasa}
+						onChange={(e) => setTasa(parseInt(e.target.value) || 1)}
+						className={styles.input}
+					/>
+				</div>
 				<select
 					value={selectedProduct}
 					onChange={(e) => setSelectedProduct(e.target.value)}
@@ -225,13 +238,16 @@ function SalesPage() {
 							})}
 						</tbody>
 					</table>
-					<h3>Total: ${calculateTotal().toFixed(2)}</h3>
+					<h3>
+						Total: ${calculateTotal().toFixed(2)} (Bs{' '}
+						{calculateTotal().toFixed(2) * tasa})
+					</h3>
 				</div>
 				<button
 					onClick={handlePrintInvoice}
 					className={styles.buttonPrint}
 				>
-					Imprimir Factura
+					Procesar e Imprimir Factura
 				</button>
 			</div>
 		</div>
