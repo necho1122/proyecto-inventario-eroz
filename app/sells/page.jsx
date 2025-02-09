@@ -11,6 +11,7 @@ function SalesPage() {
 	const [quantity, setQuantity] = useState(1);
 	const [tasa, setTasa] = useState('');
 	const [products, setProducts] = useState([]);
+	const [stock, setStock] = useState([]);
 	const [customerDetails, setCustomerDetails] = useState({
 		nombre: '',
 		cedula: '',
@@ -22,6 +23,7 @@ function SalesPage() {
 			const response = await fetch('/api/stocks/getItems', { method: 'GET' });
 			if (!response.ok) throw new Error('Error al obtener los productos');
 			const data = await response.json();
+			setStock(data);
 
 			const processedProducts = data.map((product) => ({
 				...product,
@@ -37,6 +39,51 @@ function SalesPage() {
 	useEffect(() => {
 		getProducts();
 	}, []);
+
+	const actualizarCantidades = async () => {
+		try {
+			const promises = cart.map(async (producto) => {
+				const productoEnStock = stock.find((item) => item.id === producto.id);
+
+				if (!productoEnStock) {
+					console.error(
+						`Producto no encontrado en stock: ${producto.producto}`
+					);
+					return;
+				}
+
+				console.log(`Stock antes de la venta: ${productoEnStock.cantidad}`);
+				console.log(`Cantidad en carrito: ${producto.quantity}`);
+
+				const nuevaCantidad = productoEnStock.cantidad - producto.quantity;
+
+				console.log(`Nueva cantidad calculada: ${nuevaCantidad}`);
+
+				if (isNaN(nuevaCantidad) || nuevaCantidad < 0) {
+					alert(`Stock insuficiente para ${producto.producto}.`);
+					return;
+				}
+
+				const response = await fetch('/api/stocks/editItemOnSale', {
+					method: 'PUT',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ id: producto.id, nuevaCantidad }),
+				});
+
+				if (!response.ok) {
+					console.error(`Error al actualizar ${producto.producto}`);
+					return;
+				}
+
+				console.log(`Stock actualizado para: ${producto.producto}`);
+			});
+
+			await Promise.all(promises);
+			alert('Stock actualizado exitosamente.');
+		} catch (error) {
+			console.error('Error al actualizar stock:', error);
+		}
+	};
 
 	const handleAddToCart = () => {
 		const product = products.find((item) => item.id === selectedProduct);
@@ -88,42 +135,67 @@ function SalesPage() {
 	};
 
 	const handlePrintInvoice = async () => {
-		// Guardar la venta en Firebase
-		await saveSellToFirebase();
+		try {
+			// Abrir la ventana ANTES de cualquier operación async
+			const printWindow = window.open('', '_blank');
 
-		// Generar e imprimir la factura
-		const invoiceContent = document.getElementById('invoice').innerHTML;
-		const printWindow = window.open('', '_blank');
-		printWindow.document.write(`
-			<html>
-				<head>
-					<title>Factura</title>
-					<style>
-						body { font-family: Arial, sans-serif; margin: 20px; }
-						h1 { color: #0078d7; }
-						table { width: 100%; border-collapse: collapse; }
-						th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-						th { background-color: #f4f4f9; }
-						.customer-details { margin-bottom: 20px; }
-					</style>
-				</head>
-				<body>
-					<div class="customer-details">
-						<h3>JCellPC</h3>
-						<p><strong>RIF:</strong> 18.455.219-8</p>
-						<p><strong>Dirección:</strong> Malaver 2 local #105-B en San José de Guanipa 6054, Estado Anzoátegui.</p>
-						<p><strong>Fecha:</strong> ${new Date().toLocaleString()}</p>
-						<h3>Detalles del Cliente</h3>
-						<p><strong>Nombre:</strong> ${customerDetails.nombre}</p>
-						<p><strong>Cédula:</strong> ${customerDetails.cedula}</p>
-						<p><strong>Dirección:</strong> ${customerDetails.direccion}</p>
-					</div>
-					${invoiceContent}
-				</body>
-			</html>
-		`);
-		printWindow.document.close();
-		printWindow.print();
+			if (!printWindow) {
+				alert(
+					'Error: No se pudo abrir la ventana de impresión. Revisa las configuraciones del navegador.'
+				);
+				return;
+			}
+
+			// Guardar la venta en Firebase
+			await saveSellToFirebase();
+			await actualizarCantidades();
+
+			// Verificar si el elemento "invoice" existe
+			const invoiceElement = document.getElementById('invoice');
+			if (!invoiceElement) {
+				alert('Error: No se pudo generar la factura porque falta información.');
+				printWindow.close(); // Cerrar la ventana si no hay contenido
+				return;
+			}
+
+			const invoiceContent = invoiceElement.innerHTML;
+
+			// Escribir contenido en la ventana de impresión
+			printWindow.document.write(`
+				<html>
+					<head>
+						<title>Factura</title>
+						<style>
+							body { font-family: Arial, sans-serif; margin: 20px; }
+							h1 { color: #0078d7; }
+							table { width: 100%; border-collapse: collapse; }
+							th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+							th { background-color: #f4f4f9; }
+							.customer-details { margin-bottom: 20px; }
+						</style>
+					</head>
+					<body>
+						<div class="customer-details">
+							<h3>JCellPC</h3>
+							<p><strong>RIF:</strong> 18.455.219-8</p>
+							<p><strong>Dirección:</strong> Malaver 2 local #105-B en San José de Guanipa 6054, Estado Anzoátegui.</p>
+							<p><strong>Fecha:</strong> ${new Date().toLocaleString()}</p>
+							<h3>Detalles del Cliente</h3>
+							<p><strong>Nombre:</strong> ${customerDetails.nombre}</p>
+							<p><strong>Cédula:</strong> ${customerDetails.cedula}</p>
+							<p><strong>Dirección:</strong> ${customerDetails.direccion}</p>
+						</div>
+						${invoiceContent}
+					</body>
+				</html>
+			`);
+
+			printWindow.document.close();
+			printWindow.print();
+		} catch (error) {
+			console.error('Error al generar la factura:', error);
+			alert('Ocurrió un error al intentar imprimir la factura.');
+		}
 	};
 
 	const calculateTotal = () =>
