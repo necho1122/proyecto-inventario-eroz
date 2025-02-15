@@ -1,85 +1,68 @@
-/* Estilos generales para la página */
 .container
 {
-    font-family: 'Roboto', Arial, sans-serif;
-    color: #333;
-    background-color: #f4f4f9;
-    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+    background-color: white;
     padding: 20px;
 }
 
 .content
 {
-    text-align: center;
-    background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: white;
     padding: 40px;
+    text-align: center;
     max-width: 600px;
     width: 100%;
-    margin: auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.content:hover
-{
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .title
 {
-    font-size: 2.5rem;
-    color: #0078d7;
-    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .subtitle
 {
     font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 2rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.linksContainer
+{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+@media (min-width: 600px)
+{
+    .linksContainer
+    {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .link
 {
     display: inline-block;
-    background-color: #0078d7;
-    color: #ffffff;
+    padding: 12px 20px;
+    background: #007bff;
+    color: white;
     text-decoration: none;
-    padding: 12px 24px;
     font-size: 1rem;
+    font-weight: bold;
     border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-align: center;
 }
 
 .link:hover
 {
-    background-color: #005bb5;
+    background: #0056b3;
     transform: scale(1.05);
-    color: #ffffff;
-}
-
-.link:active
-{
-    transform: scale(0.95);
-}
-
-.linksContainer
-{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    /* Espacio entre los enlaces */
-    margin-top: 20px;
-}
-
-.link:hover
-{
-    color: #005f9e;
 }

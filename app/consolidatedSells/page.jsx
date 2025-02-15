@@ -9,13 +9,17 @@ function SalesList() {
 	const [sales, setSales] = useState([]);
 	const [expandedSales, setExpandedSales] = useState({}); // Controla qué venta está expandida
 
-	// Obtener las ventas desde Firebase
+	// Obtener las ventas desde Firebase y ordenarlas en orden descendente
 	const fetchSales = async () => {
 		try {
 			const response = await fetch('/api/sells/getSells', { method: 'GET' });
 			if (!response.ok) throw new Error('Error al obtener las ventas');
 			const data = await response.json();
-			setSales(data);
+
+			// Ordenar ventas de la más nueva a la más antigua
+			const sortedSales = data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+			setSales(sortedSales);
 		} catch (error) {
 			console.error('Error al cargar ventas:', error.message);
 		}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import styles from './page.module.css';
 import Navbar from '@/components/Navbar';
+import Image from 'next/image';
 
 function Page() {
 	return (
@@ -35,6 +36,14 @@ function Page() {
 							Ir a la sección de nueva venta
 						</Link>
 					</div>
+				</div>
+				<div className={styles.imageContainer}>
+					<Image
+						src='/image.png'
+						alt='Imagen de una computadora y un celular'
+						width={600}
+						height={600}
+					/>
 				</div>
 			</div>
 		</>

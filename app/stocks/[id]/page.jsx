@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import styles from './page.module.css';
 import Link from 'next/link';
 import { HomeIcon } from '@/components/Icons';
@@ -44,27 +44,36 @@ async function editarProducto(id, producto) {
 }
 
 function EditProduct({ params }) {
-	const { id } = params; // Accede al id del producto desde el enrutamiento dinámico
+	const { id } = use(params); // Accede al id del producto desde el enrutamiento dinámico
 	const [producto, setProducto] = useState({
 		producto: '',
 		cantidad: '',
 		precioUnitario: '',
 	});
+	const [search, setSearch] = useState([]);
+
+	const handleSearchProducto = async (e) => {
+		const response = await fetch('/api/stocks/getItems');
+		const data = await response.json();
+		const producto = data.find((item) => item.id === id);
+		setSearch(producto);
+	};
 
 	useEffect(() => {
 		if (id) {
 			obtenerProducto(id)
 				.then((data) => {
 					setProducto({
-						producto: data.producto,
-						cantidad: data.cantidad,
-						precioUnitario: data.precioUnitario,
+						producto: data.producto || '',
+						cantidad: data.cantidad || '',
+						precioUnitario: data.precioUnitario || '',
 					});
 				})
 				.catch((error) => {
 					console.error('Error al cargar el producto:', error);
 				});
 		}
+		handleSearchProducto();
 	}, [id]);
 
 	const handleChange = (e) => {
@@ -104,6 +113,7 @@ function EditProduct({ params }) {
 						id='producto'
 						value={producto.producto}
 						onChange={handleChange}
+						placeholder={search.producto}
 						required
 					/>
 				</div>
@@ -114,6 +124,7 @@ function EditProduct({ params }) {
 						id='cantidad'
 						value={producto.cantidad}
 						onChange={handleChange}
+						placeholder={search.cantidad}
 						required
 					/>
 				</div>
@@ -124,6 +135,7 @@ function EditProduct({ params }) {
 						id='precioUnitario'
 						value={producto.precioUnitario}
 						onChange={handleChange}
+						placeholder={search.precioUnitario}
 						required
 					/>
 				</div>
