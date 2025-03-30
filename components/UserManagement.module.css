@@ -1,0 +1,40 @@
+.container {
+    padding: 1rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.errorMessage {
+    color: #dc2626;
+    margin: 1rem;
+    text-align: center;
+}
+
+/* Estilos para sobrescribir algunos defaults de Material-UI */
+.tableContainer {
+    margin-top: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.deleteButton {
+    color: #dc2626 !important;
+}
+
+.addButton {
+    background-color: #2563eb !important;
+    color: white !important;
+}
+
+.addButton:hover {
+    background-color: #1d4ed8 !important;
+}

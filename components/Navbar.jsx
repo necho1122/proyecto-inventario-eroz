@@ -1,8 +1,18 @@
+'use client';
+
 import Link from 'next/link';
 import styles from './Navbar.module.css';
 import Image from 'next/image';
+import { useSession, signOut } from 'next-auth/react';
+import { FiLogOut } from 'react-icons/fi';
 
 const Navbar = () => {
+	const { data: session } = useSession();
+
+	const handleSignOut = async () => {
+		await signOut({ redirect: true, callbackUrl: '/' });
+	};
+
 	return (
 		<nav className={styles.navbar}>
 			<div className={styles.logo}>
@@ -17,37 +27,34 @@ const Navbar = () => {
 			</div>
 			<ul className={styles.navLinks}>
 				<li>
-					<Link
-						href='/'
-						className={styles.link}
-					>
+					<Link href='/home' className={styles.link}>
 						Home
 					</Link>
 				</li>
 				<li>
-					<Link
-						href='/about'
-						className={styles.link}
-					>
-						Sobre nosotros
+					<Link href='/stocks' className={styles.link}>
+						Inventario
 					</Link>
 				</li>
 				<li>
-					<Link
-						href='/services'
-						className={styles.link}
-					>
-						Servicios
+					<Link href='/sells' className={styles.link}>
+						Ventas
 					</Link>
 				</li>
-				<li>
-					<Link
-						href='/contact'
-						className={styles.link}
-					>
-						Contacto
-					</Link>
-				</li>
+				{session?.user?.role === 'admin' && (
+					<li>
+						<Link href='/user/adminPage' className={styles.link}>
+							Admin Panel
+						</Link>
+					</li>
+				)}
+				{session && (
+					<li>
+						<button onClick={handleSignOut} className={styles.signOutButton}>
+							<FiLogOut /> Cerrar Sesión
+						</button>
+					</li>
+				)}
 			</ul>
 		</nav>
 	);

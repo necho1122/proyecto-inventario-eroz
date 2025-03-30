@@ -2,16 +2,20 @@
 
 import Link from 'next/link';
 import styles from './page.module.css';
-import Navbar from '@/components/Navbar';
+
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 function Page() {
+	const { data: session } = useSession();
+
 	return (
 		<>
-			<Navbar />
 			<div className={styles.container}>
 				<div className={styles.content}>
-					<h1 className={styles.title}>Bienvenido a JCellPC</h1>
+					<h1 className={styles.title}>
+						Bienvenido {session?.user?.name ? `${session.user.name} a` : 'a'} JCellPC
+					</h1>
 					<p className={styles.subtitle}>
 						Tu solución profesional para la reparación de celulares y
 						computadores.
@@ -39,10 +43,10 @@ function Page() {
 				</div>
 				<div className={styles.imageContainer}>
 					<Image
-						src='/image.png'
+						src='/logo.jpg'
 						alt='Imagen de una computadora y un celular'
-						width={600}
-						height={600}
+						width={200}
+						height={200}
 					/>
 				</div>
 			</div>

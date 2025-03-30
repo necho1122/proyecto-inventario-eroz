@@ -44,7 +44,7 @@ async function editarProducto(id, producto) {
 }
 
 function EditProduct({ params }) {
-	const { id } = use(params); // Accede al id del producto desde el enrutamiento dinámico
+	const { id } = params; // Accede al id del producto desde el enrutamiento dinámico
 	const [producto, setProducto] = useState({
 		producto: '',
 		cantidad: '',

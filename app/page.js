@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Hook para redirección
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase'; // Importa la instancia de Firebase Auth
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -13,20 +13,27 @@ const Login = () => {
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	const router = useRouter(); // Inicializa el hook useRouter
+	const router = useRouter();
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		setLoading(true);
 		setError('');
 
-		try {
-			await signInWithEmailAndPassword(auth, email, password);
-			router.push('/home'); // Redirige al usuario
-		} catch (err) {
+		const result = await signIn('credentials', {
+			redirect: false,
+			email,
+			password,
+			callbackUrl: '/home', // Redirige a /home tras autenticación exitosa
+		});
+
+		console.log('Resultado de signIn:', result); // Log para depuración
+
+		if (result?.error) {
 			setError('Credenciales incorrectas o usuario no registrado.');
-		} finally {
 			setLoading(false);
+		} else {
+			router.push(result.url || '/home'); // Redirige al usuario
 		}
 	};
 
@@ -36,6 +43,12 @@ const Login = () => {
 				className={styles.form}
 				onSubmit={handleLogin}
 			>
+				<Image
+					src='/logo.jpg'
+					alt='Logo'
+					width={100}
+					height={100}
+				/>
 				<h2 className={styles.title}>Iniciar Sesión</h2>
 
 				{error && <p className={styles.error}>{error}</p>}

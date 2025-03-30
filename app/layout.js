@@ -1,26 +1,31 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Roboto_Mono } from 'next/font/google';
+import Providers from './providers';
+import Navbar from '@/components/Navbar';
 import './globals.css';
 
-const geistSans = Geist({
-	variable: '--font-geist-sans',
+const inter = Inter({
+	variable: '--font-inter',
 	subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-	variable: '--font-geist-mono',
+const robotoMono = Roboto_Mono({
+	variable: '--font-roboto-mono',
 	subsets: ['latin'],
 });
 
 export const metadata = {
-	title: 'JCellPC',
-	description: 'Tienda de celulares, computadoras y accesorios',
+    title: 'JCellPC',
+    description: 'Tienda de celulares, computadoras y accesorios',
 };
 
 export default function RootLayout({ children }) {
 	return (
 		<html lang='en'>
-			<body className={`${geistSans.variable} ${geistMono.variable}`}>
-				{children}
+			<body className={`${inter.variable} ${robotoMono.variable}`}>
+				<Providers>
+					<Navbar />
+					{children}
+				</Providers>
 			</body>
 		</html>
 	);
