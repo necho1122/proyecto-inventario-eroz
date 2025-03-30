@@ -66,9 +66,7 @@ export const options = {
     },
     pages: {
         signIn: '/',
-        error: '/',
-        signOut: '/'
     },
-    secret: process.env.NEXTAUTH_SECRET || 'tu-secreto-seguro',
+    secret: process.env.NEXTAUTH_SECRET,
     debug: process.env.NODE_ENV === 'development'
 };
