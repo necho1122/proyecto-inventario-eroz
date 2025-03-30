@@ -9,7 +9,7 @@ function SalesPage() {
 	const [cart, setCart] = useState([]);
 	const [selectedProduct, setSelectedProduct] = useState('');
 	const [quantity, setQuantity] = useState(1);
-	const [tasa, setTasa] = useState('');
+	const [exchangeRate, setExchangeRate] = useState({ rate: 0, date: '' });
 	const [products, setProducts] = useState([]);
 	const [stock, setStock] = useState([]);
 	const [customerDetails, setCustomerDetails] = useState({
@@ -17,6 +17,20 @@ function SalesPage() {
 		cedula: '',
 		direccion: '',
 	});
+
+	const getExchangeRate = async () => {
+		try {
+			const response = await fetch('https://pydolarve.org/api/v1/dollar?page=bcv');
+			if (!response.ok) throw new Error('Error al obtener la tasa de cambio');
+			const data = await response.json();
+			setExchangeRate({
+				rate: data.monitors.usd.price,
+				date: data.datetime.date
+			});
+		} catch (error) {
+			console.error('Error al cargar la tasa de cambio:', error.message);
+		}
+	};
 
 	const getProducts = async () => {
 		try {
@@ -38,6 +52,7 @@ function SalesPage() {
 
 	useEffect(() => {
 		getProducts();
+		getExchangeRate();
 	}, []);
 
 	const actualizarCantidades = async () => {
@@ -244,17 +259,13 @@ function SalesPage() {
 				/>
 			</div>
 
+			<div className={styles.exchangeRate}>
+				<h3>Tasa del BCV</h3>
+				<p>Fecha: {exchangeRate.date}</p>
+				<p>1 USD = {exchangeRate.rate?.toFixed(2)} Bs</p>
+			</div>
+
 			<div className={styles.form}>
-				<div>
-					<label htmlFor='tasa'>Tasa $/Bs</label>
-					<input
-						type='number'
-						step='0.01'
-						value={tasa}
-						onChange={(e) => setTasa(parseFloat(e.target.value) || 1)}
-						className={styles.input}
-					/>
-				</div>
 				<select
 					value={selectedProduct}
 					onChange={(e) => setSelectedProduct(e.target.value)}
@@ -293,30 +304,34 @@ function SalesPage() {
 							<tr>
 								<th>Producto</th>
 								<th>Cantidad</th>
-								<th>Precio Unitario</th>
-								<th>Subtotal</th>
+								<th>Precio Unitario ($)</th>
+								<th>Subtotal ($)</th>
+								<th>Subtotal (Bs)</th>
 							</tr>
 						</thead>
 						<tbody>
 							{cart.map((item) => {
-								const unitPrice = parseFloat(item.precioUnitario) || 0;
-								const subtotal = unitPrice * item.quantity;
-
+								const subtotalUSD = item.precioUnitario * item.quantity;
+								const subtotalBs = subtotalUSD * exchangeRate.rate;
 								return (
 									<tr key={item.id}>
 										<td>{item.producto}</td>
 										<td>{item.quantity}</td>
-										<td>${unitPrice.toFixed(2)}</td>
-										<td>${subtotal.toFixed(2)}</td>
+										<td>${item.precioUnitario.toFixed(2)}</td>
+										<td>${subtotalUSD.toFixed(2)}</td>
+										<td>Bs {subtotalBs.toFixed(2)}</td>
 									</tr>
 								);
 							})}
 						</tbody>
+						<tfoot>
+							<tr>
+								<td colSpan="3"><strong>Total:</strong></td>
+								<td><strong>${calculateTotal().toFixed(2)}</strong></td>
+								<td><strong>Bs {(calculateTotal() * exchangeRate.rate).toFixed(2)}</strong></td>
+							</tr>
+						</tfoot>
 					</table>
-					<h3>
-						Total: ${calculateTotal().toFixed(2)} (Bs{' '}
-						{(calculateTotal() * tasa).toFixed(2)})
-					</h3>
 				</div>
 				<button
 					onClick={handlePrintInvoice}

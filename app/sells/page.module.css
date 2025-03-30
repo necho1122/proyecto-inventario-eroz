@@ -94,3 +94,23 @@
 {
     background-color: #218838;
 }
+
+.exchangeRate {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 20px auto;
+    max-width: 300px;
+    text-align: center;
+}
+
+.exchangeRate h3 {
+    color: #0078d7;
+    margin-bottom: 10px;
+}
+
+.exchangeRate p {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
