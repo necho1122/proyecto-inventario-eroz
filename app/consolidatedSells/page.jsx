@@ -232,11 +232,10 @@ function SalesList() {
 							<div className={styles.saleDetails}>
 								<h3>Detalles de la Venta</h3>
 								<ul className={styles.productsList}>
-									{sale.productos.map((product) => (
-										<li key={product.id} className={styles.productItem}>
-											<span className={styles.productName}>
-												{product.producto}
-											</span>
+									{sale.productos.map((product, index) => (
+										<li key={index} className={styles.productItem}>
+											<div className={styles.invoiceId}>Factura: {sale.id}</div>
+											<span>{product.producto}</span>
 											<div className={styles.productDetails}>
 												<span>
 													Cantidad: {product.cantidad}
