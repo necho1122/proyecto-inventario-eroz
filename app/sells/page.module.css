@@ -114,3 +114,43 @@
     margin: 5px 0;
     font-size: 1.1em;
 }
+
+.customerDetails {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.customerDetails h3 {
+    color: #0078d7;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.customerDetails .form-group {
+    margin-bottom: 15px;
+}
+
+.customerDetails label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+.customerDetails input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+.customerDetails input:focus {
+    outline: none;
+    border-color: #0078d7;
+    box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.2);
+}

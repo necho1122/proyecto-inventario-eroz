@@ -13,6 +13,7 @@ function SalesList() {
 		startDate: '',
 		endDate: ''
 	});
+	const [notifications, setNotifications] = useState([]);
 
 	const fetchSales = async () => {
 		try {
@@ -118,8 +119,45 @@ function SalesList() {
 		doc.save('reporte-ventas-jcellpc.pdf');
 	};
 
+	const addNotification = (message) => {
+		const id = Date.now();
+		setNotifications(prev => [...prev, { id, message }]);
+		
+		setTimeout(() => {
+			setNotifications(prev => prev.filter(n => n.id !== id));
+		}, 5000);
+	};
+
+	const handleCancelSale = async (sellId) => {
+		if (window.confirm('¿Estás seguro de que deseas cancelar esta venta?')) {
+			try {
+				const response = await fetch('/api/sells/cancelSell', { 
+					method: 'POST', 
+					body: JSON.stringify({ sellId }) 
+				});
+				const result = await response.json();
+				
+				if (response.ok) {
+					addNotification(`Venta cancelada. Stock actualizado: ${result.updatedProducts.join(', ')}`);
+					fetchSales();
+				} else {
+					addNotification('Error al cancelar la venta');
+				}
+			} catch (error) {
+				addNotification('Error de conexión');
+			}
+		}
+	};
+
 	return (
 		<div className={styles.container}>
+			<div className={styles.notifications}>
+				{notifications.map(notification => (
+					<div key={notification.id} className={styles.notification}>
+						{notification.message}
+					</div>
+				))}
+			</div>
 			<div className={styles.header}>
 				<Link href='/home' className={styles.homeLink}>
 					<HomeIcon />
@@ -220,6 +258,12 @@ function SalesList() {
 								</div>
 							</div>
 						)}
+						<button 
+							onClick={() => handleCancelSale(sale.id)}
+							className={styles.cancel}
+						>
+							Cancelar
+						</button>
 					</li>
 				))}
 			</ul>

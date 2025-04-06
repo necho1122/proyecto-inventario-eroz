@@ -231,32 +231,35 @@ function SalesPage() {
 			</Link>
 			<h1>Procesar Ventas</h1>
 
-			<div className={styles.customerForm}>
-				<h2>Detalles del Cliente</h2>
-				<input
-					type='text'
-					name='nombre'
-					placeholder='Nombre del Cliente'
-					value={customerDetails.nombre}
-					onChange={handleCustomerDetailsChange}
-					className={styles.input}
-				/>
-				<input
-					type='number'
-					name='cedula'
-					placeholder='Cédula'
-					value={customerDetails.cedula}
-					onChange={handleCustomerDetailsChange}
-					className={styles.input}
-				/>
-				<input
-					type='text'
-					name='direccion'
-					placeholder='Dirección'
-					value={customerDetails.direccion}
-					onChange={handleCustomerDetailsChange}
-					className={styles.input}
-				/>
+			<div className={styles.customerDetails}>
+				<h3>Detalles del Cliente</h3>
+				<div className="form-group">
+					<label>Nombre:</label>
+					<input
+						type="text"
+						value={customerDetails.nombre}
+						onChange={(e) => setCustomerDetails({ ...customerDetails, nombre: e.target.value })}
+						placeholder="Ingrese el nombre del cliente"
+					/>
+				</div>
+				<div className="form-group">
+					<label>Cédula:</label>
+					<input
+						type="text"
+						value={customerDetails.cedula}
+						onChange={(e) => setCustomerDetails({ ...customerDetails, cedula: e.target.value })}
+						placeholder="Ingrese la cédula del cliente"
+					/>
+				</div>
+				<div className="form-group">
+					<label>Dirección:</label>
+					<input
+						type="text"
+						value={customerDetails.direccion}
+						onChange={(e) => setCustomerDetails({ ...customerDetails, direccion: e.target.value })}
+						placeholder="Ingrese la dirección del cliente"
+					/>
+				</div>
 			</div>
 
 			<div className={styles.exchangeRate}>

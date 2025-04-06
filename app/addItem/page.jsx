@@ -34,7 +34,11 @@ function AddVentaComponent() {
 		precioUnitario: '',
 		marca: '',
 		categoria: '',
+		fecha: '', // Nuevo campo para la fecha
 	});
+
+	const [mensaje, setMensaje] = useState(''); // Estado para el mensaje de notificación
+	const [mostrarMensaje, setMostrarMensaje] = useState(false); // Estado para mostrar/ocultar el mensaje
 
 	const handleChange = (e) => {
 		const { id, value } = e.target;
@@ -50,19 +54,29 @@ function AddVentaComponent() {
 			!venta.cantidad ||
 			!venta.precioUnitario ||
 			!venta.marca ||
-			!venta.categoria
+			!venta.categoria ||
+			!venta.fecha // Validar que la fecha esté presente
 		) {
 			alert('Por favor, completa todos los campos.');
 			return;
 		}
-		await agregarVenta(venta); // Llama a la función para agregar la venta
-		setVenta({
-			producto: '',
-			cantidad: '',
-			precioUnitario: '',
-			marca: '',
-			categoria: '',
-		}); // Limpia los campos
+		try {
+			await agregarVenta(venta); // Llama a la función para agregar la venta
+			setMensaje('Producto agregado con éxito al stock.'); // Mensaje de éxito
+			setVenta({
+				producto: '',
+				cantidad: '',
+				precioUnitario: '',
+				marca: '',
+				categoria: '',
+				fecha: '',
+			}); // Limpia los campos
+		} catch (error) {
+			setMensaje('Error al agregar el producto al stock.'); // Mensaje de error
+		} finally {
+			setMostrarMensaje(true); // Muestra el mensaje
+			setTimeout(() => setMostrarMensaje(false), 3000); // Oculta el mensaje después de 3 segundos
+		}
 	};
 
 	return (
@@ -74,6 +88,9 @@ function AddVentaComponent() {
 					<HomeIcon />
 				</Link>
 				<h1>Agregar nuevo producto</h1>
+				{mostrarMensaje && (
+					<div className={styles.notification}>{mensaje}</div> // Ventana flotante
+				)}
 				<div className={styles.formGroup}>
 					<label htmlFor='producto'>Producto:</label>
 					<input
@@ -122,7 +139,15 @@ function AddVentaComponent() {
 						<option value='Telefonos'>Teléfonos</option>
 					</select>
 				</div>
-
+				<div className={styles.formGroup}>
+					<label htmlFor='fecha'>Fecha:</label>
+					<input
+						type='date'
+						id='fecha'
+						value={venta.fecha}
+						onChange={handleChange}
+					/>
+				</div>
 				<button onClick={handleAddVenta}>Agregar Producto</button>
 				<Link
 					href='/stocks'

@@ -20,16 +20,20 @@ const Login = () => {
 		setLoading(true);
 		setError('');
 
-		try {
-			const result = await signIn('credentials', {
-				redirect: true,
-				email,
-				password,
-				callbackUrl: '/home'
-			});
-		} catch (error) {
-			setError('Error al iniciar sesión');
+		const result = await signIn('credentials', {
+			redirect: false,
+			email,
+			password,
+			callbackUrl: '/home', // Redirige a /home tras autenticación exitosa
+		});
+
+		console.log('Resultado de signIn:', result); // Log para depuración
+
+		if (result?.error) {
+			setError('Credenciales incorrectas o usuario no registrado.');
 			setLoading(false);
+		} else {
+			router.push(result.url || '/home'); // Redirige al usuario
 		}
 	};
 

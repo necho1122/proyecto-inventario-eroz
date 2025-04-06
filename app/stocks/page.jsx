@@ -139,9 +139,13 @@ function Page() {
 							Agregar Producto
 						</Link>
 					)}
+					<Link href='/returns' className={styles.addButton}>
+						Devoluciones
+					</Link>
 					<button onClick={handleDownloadPDF} className={styles.downloadButton}>
 						Descargar PDF
 					</button>
+
 				</div>
 			</div>
 
